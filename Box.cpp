@@ -29,7 +29,36 @@ template <typename T> void read(T &t){
 
 const LL MaxN = 1 + 1e5;
 
-LL n, a[MaxN];
+LL n, a[MaxN], t, kq[MaxN], d[MaxN];
+
+void Solve(){
+    read(n);
+    LL j = 1, ma = 0;
+    for(int i = 0 ; i < n ; ++i) read(a[i]);
+    a[n] = 1e18;
+    fill(d + 1, d + n + 1, 0);
+    for(int i = 0 ; i < n ; ++i){
+        if(a[i] > a[i + 1]){
+            cout << -1 << endl;
+            return;
+        }
+        if(a[i] > ma){
+            ma = a[i];
+            d[ma] = 1;
+            kq[i] = ma;
+            continue;
+        }
+        while(j < ma && d[j] == 1) j++;
+        if(d[j] == 1){
+            cout << -1 << endl;
+            return;
+        }
+        kq[i] = j;
+        d[j] = 1;
+    }
+    for(int i = 0 ; i < n ; ++i) cout << kq[i] << " ";
+    cout << endl;
+}
 
 void InOut(){
     #define TASK "ABC"
@@ -38,10 +67,14 @@ void InOut(){
 }
 
 int main(){
-    InOut();
+    // InOut();
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
+    read(t);
+    for(int te = 0 ; te < t ; ++te){
+        Solve();
+    }
 
     return 0;
 }

@@ -1,6 +1,10 @@
 // Code by Nguyen Huu Lam
 #include<bits/stdc++.h>
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+#include<ext/pb_ds/trie_policy.hpp>
 using namespace std;
+using namespace __gnu_pbds;
 
 typedef long long LL;
 
@@ -17,6 +21,7 @@ typedef long long LL;
 #define hash Slient_voice
 
 mt19937_64 rng(chrono::high_resolution_clock::now().time_since_epoch().count());
+
 LL Rand(LL l, LL h){
     return uniform_int_distribution<LL>(l, h)(rng);
 }
@@ -29,7 +34,11 @@ template <typename T> void read(T &t){
 
 const LL MaxN = 1 + 1e5;
 
-LL n, a[MaxN];
+LL n, a[MaxN], x;
+#define ordered_set tree<LL, null_type, less<LL>, rb_tree_tag, tree_order_statistics_node_update>
+ordered_set s;
+#define trie tree<LL, null_type, less<LL>, pat_trie_tag, null_node_update>
+trie tr;
 
 void InOut(){
     #define TASK "ABC"
@@ -42,6 +51,12 @@ int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
+    cin >> n;
+    for(int i = 0 ; i < n ; ++i){
+        cin >> x;
+        tr.insert(x);
+    }
+    tr.size(1);
 
     return 0;
 }
