@@ -1,47 +1,72 @@
-// Code by Nguyen Huu Lam
-#include<bits/stdc++.h>
+#include <functional>
+#include <algorithm>
+#include <iostream>
+#include <numeric>
+#include <cassert>
+#include <cstdlib>
+#include <cstring>
+#include <string>
+#include <cstdio>
+#include <vector>
+#include <ctime>
+#include <queue>
+#include <set>
+#include <map>
 using namespace std;
-
-typedef long long LL;
-
-#define y0 Sword_Art_Online
-#define y1 Your_lie_in_April
-#define yn Darling_in_the_Franxx
-#define tm Plastic_Memories
-#define lr Charlotte
-#define norm Weathering_with_you
-#define left Violet_Evergarden
-#define have Date_a_live
-#define ends Your_name
-#define prev Five_centimeters_per_second
-#define hash Slient_voice
-
-mt19937_64 rng(chrono::high_resolution_clock::now().time_since_epoch().count());
-LL Rand(LL l, LL h){
-    return uniform_int_distribution<LL>(l, h)(rng);
+#define forn(i, n) for (int i = 0; i < (int)(n); ++i)
+#define fore(i, b, e) for (int i = (int)(b); i <= (int)(e); ++i)
+#define ford(i, n) for (int i = (int)(n) - 1; i >= 0; --i)
+#define mp make_pair
+#define pb push_back
+#define fi first
+#define se second
+#define all(x) (x).begin(), (x).end()
+typedef vector<int> vi;
+typedef pair<int, int> pii;
+typedef long long i64;
+typedef unsigned long long u64;
+const int inf = 1e9+100500;
+ 
+const int sz = 1<<17;
+ 
+vi rmq[sz * 2];
+int a[sz];
+ 
+int get(int l, int r, int x) {
+    int s = 0;
+    l += sz;
+    r += sz;
+    while (l < r) {
+        if (l%2 == 1) s += lower_bound(all(rmq[l]), x) - rmq[l].begin();
+        if (r%2 == 0) s += lower_bound(all(rmq[r]), x) - rmq[r].begin();
+        l = (l+1) / 2;
+        r = (r-1) / 2;
+    }
+    if (l == r) s += lower_bound(all(rmq[l]), x) - rmq[l].begin();
+    return s;
 }
-
-template <typename T> void read(T &t){
-    t = 0; char ch = getchar(); int f = 1;
-    while (!isdigit(ch)) { if (ch == '-') f = -1; ch = getchar(); }
-    do { (t *= 10) += ch - '0'; ch = getchar(); } while (isdigit(ch)); t *= f;
-}
-
-const LL MaxN = 1 + 1e5;
-
-LL n, a[MaxN];
-
-void InOut(){
+ 
+int main() {
     #define TASK "ABC"
     freopen(TASK".inp","r",stdin);
     freopen(TASK".out","w",stdout);
-}
-
-int main(){
-    InOut();
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
+    int n;
+    cin >> n;
+    forn(i, n) cin >> a[i];
+    forn(i, n) rmq[i+sz] = {a[i]};
+    ford(i, sz) if (i) {
+        rmq[i].resize(rmq[i*2].size() + rmq[i*2+1].size());
+        merge(all(rmq[i*2]), all(rmq[i*2+1]), rmq[i].begin());
+    }
+    int m;
+    cin >> m;
+    forn(i, m) {
+        int l, r, x;
+        cin >> l >> r >> x;
+        int a = get(l, r, x);
+        cout << a << endl;
+    }
+    // cout << s << endl;
 
     return 0;
 }
