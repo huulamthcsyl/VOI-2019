@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 // Tên chương trình
-const string NAME = "SUBDIVK";
+const string NAME = "DQUERY";
 // Số test kiểm tra
 const int NTEST = 100;
 
@@ -19,11 +19,17 @@ int main()
         ofstream inp((NAME + ".inp").c_str());
         // Code phần sinh test ở đây
 
-        long long n = Rand(1, 100), m = Rand(1, 100);
-
-        inp << n << " " << m << endl;
-
-        for(int i = 0 ; i < n ; ++i) inp << Rand(1, 1000) << " ";
+        long long n = Rand(1, 10), t = Rand(1, 5);
+        inp << n << endl;
+        for(int i = 0 ; i < n ; ++i) inp << Rand(1, 3) << " ";
+        inp << endl;
+        inp << t << endl;
+        for(int i = 0 ; i < t ; ++i){
+            int l = Rand(1, n);
+            int r = Rand(l, n);
+            inp << l << " " << r << endl;
+        }
+        
         inp.close();
 
         // Nếu dùng Linux thì "./" + Tên chương trình

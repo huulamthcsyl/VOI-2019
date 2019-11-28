@@ -2,7 +2,8 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-typedef long long LL;
+typedef int LL;
+typedef pair<LL, LL> II;
 
 #define y0 Sword_Art_Online
 #define y1 Your_lie_in_April
@@ -30,33 +31,56 @@ template <typename T> void read(T &t){
 
 const LL MaxN = 1 + 1e3;
 
-LL n, a[MaxN][MaxN], x, y, m, t, d[MaxN], d1[MaxN];
-set<LL, greater<LL> > se, set_base;
+LL n, a[MaxN][MaxN], x, y, m, t, d[MaxN][MaxN], f[MaxN][MaxN];
 
-namespace Subtask1{
-    void Solve(){
-        read(t);
-        for(int te = 0 ; te < t ; ++te){
-            read(x);
-            read(y);
-            LL kq = 1e18;
-            for(int i = 0 ; i < n - x + 1 ; ++i)
-            for(int j = 0 ; j < m - y + 1 ; ++j){
-                LL ma = 0, s = 0;
-                for(int h = i ; h < i + x ; ++h)
-                for(int k = j ; k < j + y ; ++k){
-                    ma = max(ma, a[h][k]);
-                    s += a[h][k];
-                }
-                kq = min(kq, ma * (x * y) - s);
-            }
-            cout << kq << endl;
+template<typename T> class Deque{
+    T val[2 * MaxN];
+    LL n, m;
+
+    public:
+        void clear(){
+            n = 0;
+            m = -1;
         }
-    }
+
+        void push_back(II x){
+            m++;
+            val[m] = x;
+        }
+
+        void pop_back(){
+            m--;
+        }
+
+        void pop_front(){
+            n++;
+        }
+
+        inline T front(){
+            return val[n];
+        }
+
+        inline T back(){
+            return val[m];
+        }
+
+        inline LL size(){
+            return m - n + 1;
+        }
+
+        inline bool empty(){
+            return m < n;
+        }
+};
+
+Deque<II> dq;
+
+inline LL Calc(LL x, LL y, LL z, LL t){
+    return d[z][t] - d[x - 1][t] - d[z][y - 1] + d[x - 1][y - 1];
 }
 
 void InOut(){
-    #define TASK "NMATRIX"
+    #define TASK "ABC"
     freopen(TASK".inp","r",stdin);
     freopen(TASK".out","w",stdout);
 }
@@ -68,50 +92,37 @@ int main(){
     cout.tie(0);
     read(n);
     read(m);
-    for(int i = 0 ; i < n ; ++i)
-    for(int j = 0 ; j < m ; ++j) read(a[i][j]);
-    if(n <= 30 && m <= 30){
-        Subtask1::Solve();
-        return 0;
-    }
+    for(int i = 1 ; i <= n ; ++i)
+    for(int j = 1 ; j <= m ; ++j) read(a[i][j]);
+    for(int i = 1 ; i <= n ; ++i)
+    for(int j = 1 ; j <= m ; ++j)
+    d[i][j] = d[i - 1][j] + d[i][j - 1] - d[i - 1][j - 1] + a[i][j];
     read(t);
     for(int te = 0 ; te < t ; ++te){
         read(x);
         read(y);
-        LL kq = 1e18, sum_base = 0;
-        memset(d1, 0, sizeof d1);
-        set_base.clear();
-        for(int j = 0 ; j < y ; ++j)
-        for(int i = 0 ; i < x ; ++i){
-            sum_base += a[i][j];
-            d1[a[i][j]]++;
-            set_base.insert(a[i][j]);
-        }
-        for(int r = 0 ; r < n - x + 1 ; ++r){
-            if(r > 0){
-                for(int i = 0 ; i < y ; ++i){
-                    sum_base -= a[r - 1][i];
-                    d1[a[r - 1][i]]--;
-                    if(d1[a[r - 1][i]] == 0) set_base.erase(a[r - 1][i]);
-                    sum_base += a[r + x - 1][i];
-                    d1[a[r + x - 1][i]]++;
-                    set_base.insert(a[r + x - 1][i]);
-                }
+        for(int j = 1 ; j <= m ; ++j){
+            dq.clear();
+            for(int i = 1 ; i <= n ; ++i){
+                while(!dq.empty() && a[i][j] > dq.back().first) 
+                    dq.pop_back();
+                while(!dq.empty() && i - dq.front().second + 1 > x) 
+                    dq.pop_front();
+                dq.push_back({a[i][j], i});
+                f[i][j] = dq.front().first;
             }
-            LL s = sum_base;
-            memcpy(d, d1, sizeof d1);
-            se = set_base;
-            kq = min(kq, *se.begin() * (x * y) - s);
-            for(int j = y ; j < m ; ++j){
-                for(int i = r ; i < r + x ; ++i){
-                    s -= a[i][j - y];
-                    d[a[i][j - y]]--;
-                    if(d[a[i][j - y]] == 0) se.erase(a[i][j - y]);
-                    s += a[i][j];
-                    d[a[i][j]]++;
-                    se.insert(a[i][j]);
-                }
-                kq = min(kq, *se.begin() * (x * y) - s);
+        }
+        LL kq = 1e9;
+        for(int i = x ; i <= n ; ++i){
+            dq.clear();
+            for(int j = 1 ; j <= m ; ++j){
+                while(!dq.empty() && f[i][j] > dq.back().first) 
+                    dq.pop_back();
+                while(!dq.empty() && j - dq.front().second + 1 > y) 
+                    dq.pop_front();
+                dq.push_back({f[i][j], j});
+                if(j < y) continue;
+                kq = min(kq, dq.front().first * x * y - Calc(i - x + 1, j - y + 1, i, j));
             }
         }
         cout << kq << endl;
