@@ -1,10 +1,6 @@
 // Code by Nguyen Huu Lam
 #include<bits/stdc++.h>
-#include<ext/pb_ds/assoc_container.hpp>
-#include<ext/pb_ds/tree_policy.hpp>
-#include<ext/pb_ds/trie_policy.hpp>
 using namespace std;
-using namespace __gnu_pbds;
 
 typedef long long LL;
 
@@ -32,16 +28,12 @@ template <typename T> void read(T &t){
     do { (t *= 10) += ch - '0'; ch = getchar(); } while (isdigit(ch)); t *= f;
 }
 
-const LL MaxN = 1 + 1e5;
+const LL MaxN = 1 + 1e3;
 
-LL n, a[MaxN], x;
-#define ordered_set tree<LL, null_type, less<LL>, rb_tree_tag, tree_order_statistics_node_update>
-ordered_set s;
-#define trie tree<LL, null_type, less<LL>, pat_trie_tag, null_node_update>
-trie tr;
+LL n, a[MaxN], b[MaxN], c[MaxN], d[MaxN], m, e[MaxN * MaxN], k, s, kq;
 
 void InOut(){
-    #define TASK "ABC"
+    #define TASK "TERA"
     freopen(TASK".inp","r",stdin);
     freopen(TASK".out","w",stdout);
 }
@@ -51,12 +43,24 @@ int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    cin >> n;
-    for(int i = 0 ; i < n ; ++i){
-        cin >> x;
-        tr.insert(x);
+    cin >> n >> s;
+    for(int i = 0 ; i < n ; ++i) cin >> a[i];
+    for(int i = 0 ; i < n ; ++i) cin >> b[i];
+    for(int i = 0 ; i < n ; ++i) cin >> c[i];
+    for(int i = 0 ; i < n ; ++i) cin >> d[i];
+    for(int i = 0 ; i < n ; ++i)
+    for(int j = 0 ; j < n ; ++j){
+        e[k] = a[i] + b[j];
+        k++;
     }
-    tr.size();
+    sort(e, e + k);
+    for(int i = 0 ; i < n ; ++i)
+    for(int j = 0 ; j < n ; ++j){
+        LL val = s - c[i] - d[j];
+        LL l = upper_bound(e, e + k, val - 1) - e, r = upper_bound(e, e + k, val) - e;
+        kq += (r - l);
+    }
+    cout << kq << endl;
 
     return 0;
 }

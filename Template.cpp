@@ -1,95 +1,51 @@
-// Program to compute sum of ranges for different range 
-// queries 
-#include <bits/stdc++.h> 
-using namespace std; 
+// Code by Nguyen Huu Lam
+#include<bits/stdc++.h>
+// #include<ext/pb_ds/assoc_container.hpp>
+// #include<ext/pb_ds/tree_policy.hpp>
+using namespace std;
 
-// Variable to represent block size. This is made global 
-// so compare() of sort can use it. 
-int block; 
+typedef long long LL;
 
-// Structure to represent a query range 
-struct Query 
-{ 
-	int L, R; 
-}; 
+#define y0 Sword_Art_Online
+#define y1 Your_lie_in_April
+#define yn Darling_in_the_Franxx
+#define tm Plastic_Memories
+#define lr Charlotte
+#define norm Weathering_with_you
+#define left Violet_Evergarden
+#define have Date_a_live
+#define ends Your_name
+#define prev Five_centimeters_per_second
+#define hash Slient_voice
 
-// Function used to sort all queries so that all queries 
-// of the same block are arranged together and within a block, 
-// queries are sorted in increasing order of R values. 
-bool compare(Query x, Query y) 
-{ 
-	// Different blocks, sort by block. 
-	if (x.L/block != y.L/block) 
-		return x.L/block < y.L/block; 
+// #define ordered_set tree<LL, null_type, less<LL>, rb_tree_tag, tree_order_statistics_node_update>
+mt19937_64 rng(chrono::high_resolution_clock::now().time_since_epoch().count());
 
-	// Same block, sort by R value 
-	return x.R < y.R; 
-} 
+LL Rand(LL l, LL h){
+	return uniform_int_distribution<LL>(l, h)(rng);
+}
 
-// Prints sum of all query ranges. m is number of queries 
-// n is size of array a[]. 
-void queryResults(int a[], int n, Query q[], int m) 
-{ 
-	// Find block size 
-	block = (int)sqrt(n); 
+template <typename T> void read(T &t){
+	t = 0; char ch = getchar(); int f = 1;
+	while (!isdigit(ch)) { if (ch == '-') f = -1; ch = getchar(); }
+	do { (t *= 10) += ch - '0'; ch = getchar(); } while (isdigit(ch)); t *= f;
+}
 
-	// Sort all queries so that queries of same blocks 
-	// are arranged together. 
-	sort(q, q + m, compare); 
+const LL MaxN = 1 + 1e5;
 
-	// Initialize current L, current R and current sum 
-	int currL = 0, currR = 0; 
-	int currSum = 0; 
+LL n, a[MaxN];
 
-	// Traverse through all queries 
-	for (int i=0; i<m; i++) 
-	{ 
-		// L and R values of current range 
-		int L = q[i].L, R = q[i].R; 
+void InOut(){
+	#define TASK "ABC"
+	freopen(TASK".inp","r",stdin);
+	freopen(TASK".out","w",stdout);
+}
 
-		// Remove extra elements of previous range. For 
-		// example if previous range is [0, 3] and current 
-		// range is [2, 5], then a[0] and a[1] are subtracted 
-		while (currL < L) 
-		{ 
-			currSum -= a[currL]; 
-			currL++; 
-		} 
+int main(){
+	InOut();
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
 
-		// Add Elements of current Range 
-		while (currL > L) 
-		{ 
-			currSum += a[currL-1]; 
-			currL--; 
-		} 
-		while (currR <= R) 
-		{ 
-			currSum += a[currR]; 
-			currR++; 
-		} 
-
-		// Remove elements of previous range. For example 
-		// when previous range is [0, 10] and current range 
-		// is [3, 8], then a[9] and a[10] are subtracted 
-		while (currR > R+1) 
-		{ 
-			currSum -= a[currR-1]; 
-			currR--; 
-		} 
-
-		// Print sum of current range 
-		cout << "Sum of [" << L << ", " << R 
-			<< "] is " << currSum << endl; 
-	} 
-} 
-
-// Driver program 
-int main() 
-{ 
-	int a[] = {1, 1, 2, 1, 3, 4, 5, 2, 8}; 
-	int n = sizeof(a)/sizeof(a[0]); 
-	Query q[] = {{0, 4}, {1, 3}, {2, 4}}; 
-	int m = sizeof(q)/sizeof(q[0]); 
-	queryResults(a, n, q, m); 
-	return 0; 
-} 
+	return 0;
+}

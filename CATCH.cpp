@@ -1,10 +1,6 @@
 // Code by Nguyen Huu Lam
 #include<bits/stdc++.h>
-#include<ext/pb_ds/assoc_container.hpp>
-#include<ext/pb_ds/tree_policy.hpp>
-#include<ext/pb_ds/trie_policy.hpp>
 using namespace std;
-using namespace __gnu_pbds;
 
 typedef long long LL;
 
@@ -34,11 +30,14 @@ template <typename T> void read(T &t){
 
 const LL MaxN = 1 + 1e5;
 
-LL n, a[MaxN], x;
-#define ordered_set tree<LL, null_type, less<LL>, rb_tree_tag, tree_order_statistics_node_update>
-ordered_set s;
-#define trie tree<LL, null_type, less<LL>, pat_trie_tag, null_node_update>
-trie tr;
+LL n, a[MaxN], m;
+string s;
+vector<LL> ans;
+
+inline LL Check(LL x, LL y){
+    if(abs(x - n) <= 1 && abs(y - m) <= 1) return 1;
+    return 0;
+}
 
 void InOut(){
     #define TASK "ABC"
@@ -51,12 +50,20 @@ int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    cin >> n;
-    for(int i = 0 ; i < n ; ++i){
-        cin >> x;
-        tr.insert(x);
+    cin >> n >> m;
+    cin >> s;
+    LL x = 0, y = 0;
+    LL len = s.length();
+    for(int i = 0 ; i <= len ; ++i){
+        if(Check(x, y)) ans.push_back(i);
+        if(i == len) break;
+        if(s[i] == 'D') y++;
+        if(s[i] == 'L') x--;
+        if(s[i] == 'R') x++;
+        if(s[i] == 'U') y--;
     }
-    tr.size();
+    if(ans.size() == 0) cout << -1 << endl;
+    else for(int i : ans) cout << i << endl;
 
     return 0;
 }

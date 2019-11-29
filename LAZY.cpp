@@ -1,10 +1,6 @@
 // Code by Nguyen Huu Lam
 #include<bits/stdc++.h>
-#include<ext/pb_ds/assoc_container.hpp>
-#include<ext/pb_ds/tree_policy.hpp>
-#include<ext/pb_ds/trie_policy.hpp>
 using namespace std;
-using namespace __gnu_pbds;
 
 typedef long long LL;
 
@@ -32,13 +28,9 @@ template <typename T> void read(T &t){
     do { (t *= 10) += ch - '0'; ch = getchar(); } while (isdigit(ch)); t *= f;
 }
 
-const LL MaxN = 1 + 1e5;
+const LL MaxN = 1 + 1e6;
 
-LL n, a[MaxN], x;
-#define ordered_set tree<LL, null_type, less<LL>, rb_tree_tag, tree_order_statistics_node_update>
-ordered_set s;
-#define trie tree<LL, null_type, less<LL>, pat_trie_tag, null_node_update>
-trie tr;
+LL n, ans, k, d[MaxN], x, y, kq[MaxN];
 
 void InOut(){
     #define TASK "ABC"
@@ -51,12 +43,16 @@ int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    cin >> n;
+    cin >> n >> k;
     for(int i = 0 ; i < n ; ++i){
-        cin >> x;
-        tr.insert(x);
+        cin >> x >> y;
+        d[y] = x;
     }
-    tr.size();
+    for(int i = 1 ; i <= 1e6 ; ++i) kq[i] = kq[i - 1] + d[i];
+    // for(int i = 1 ; i <= 15 ; ++i) cout << kq[i] << " ";
+    // cout << endl;
+    for(int i = 1 ; i <= LL(1e6) - k * 2 - 1 ; ++i) ans = max(ans, kq[i + k * 2 + 1] - kq[i - 1]);
+    cout << ans << endl;
 
     return 0;
 }

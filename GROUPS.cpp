@@ -1,10 +1,6 @@
 // Code by Nguyen Huu Lam
 #include<bits/stdc++.h>
-#include<ext/pb_ds/assoc_container.hpp>
-#include<ext/pb_ds/tree_policy.hpp>
-#include<ext/pb_ds/trie_policy.hpp>
 using namespace std;
-using namespace __gnu_pbds;
 
 typedef long long LL;
 
@@ -32,16 +28,14 @@ template <typename T> void read(T &t){
     do { (t *= 10) += ch - '0'; ch = getchar(); } while (isdigit(ch)); t *= f;
 }
 
-const LL MaxN = 1 + 1e5;
+const LL MaxN = 1 + 1e6, INF = 1e18;
 
-LL n, a[MaxN], x;
-#define ordered_set tree<LL, null_type, less<LL>, rb_tree_tag, tree_order_statistics_node_update>
-ordered_set s;
-#define trie tree<LL, null_type, less<LL>, pat_trie_tag, null_node_update>
-trie tr;
+LL n, a[MaxN], k, x, y, b[MaxN];
+vector<LL> q;
+unordered_map<LL, LL> d;
 
 void InOut(){
-    #define TASK "ABC"
+    #define TASK "GROUPS"
     freopen(TASK".inp","r",stdin);
     freopen(TASK".out","w",stdout);
 }
@@ -51,12 +45,29 @@ int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    cin >> n;
-    for(int i = 0 ; i < n ; ++i){
-        cin >> x;
-        tr.insert(x);
+    cin >> n >> k;
+    for(int i = 0 ; i < k ; ++i){
+        cin >> a[i] >> b[i];
+        d[a[i]] = INF;
+        d[b[i]] = INF;
     }
-    tr.size();
+    for(int i = 0 ; i < k ; ++i){
+        if(a[i] > b[i]) swap(a[i], b[i]);
+        d[a[i]] = min(d[a[i]], b[i]);
+        q.push_back(a[i]);
+        q.push_back(b[i]);
+    }
+    LL mi = 1e18, kq = 1;
+    sort(q.begin(), q.end());
+    for(int i : q){
+        if(i == mi){
+            kq++;
+            mi = d[i];
+            continue;
+        }
+        mi = min(mi, d[i]);
+    }
+    cout << kq << endl;
 
     return 0;
 }
