@@ -31,39 +31,56 @@ template <typename T> void read(T &t){
     do { (t *= 10) += ch - '0'; ch = getchar(); } while (isdigit(ch)); t *= f;
 }
 
-const LL MaxN = 1 + 1e6;
+const LL MaxN = 20;
 
-LL n, a[MaxN], d[MaxN], kq;
+LL n, t;
+pair<string, LL> a[MaxN];
+string kq[MaxN];
+unordered_map<string, int> d;
 
 void InOut(){
-    #define TASK "NKLP"
+    #define TASK "ABC"
     freopen(TASK".inp","r",stdin);
     freopen(TASK".out","w",stdout);
 }
 
 int main(){
-    InOut();
+    // InOut();
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    cin >> n;
-    for(int i = 0 ; i < n ; ++i) cin >> a[i];
-    LL j = 0, s = 0;
-    for(int i = 0 ; i < n ; ++i){
-        d[a[i]]++;
-        s += a[i];
-        while(j < i && d[a[i]] > 1){
-            d[a[j]]--;
-            s -= a[j];
-            j++;
+    cin >> t;
+    for(int te = 0 ; te < t ; ++te){
+        cin >> n;
+        LL ans = 0;
+        d.clear();
+        for(int i = 0 ; i < n ; ++i){
+            cin >> a[i].first;
+            a[i].second = i;
+            d[a[i].first]++;
         }
-        LL s1 = s;
-        for(LL k = j ; k <= i ; ++k){
-            if((i - k + 2) * (i - k + 1) / 2 == s1) kq = max(kq, i - k + 1);
-            s1 -= a[k];
+        char temp = '0';
+        sort(a, a + n);
+        for(int i = 0 ; i < n ; ++i){
+            if(d[a[i].first] == 1){
+                kq[a[i].second] = a[i].first;
+                continue;
+            }
+            d[a[i].first]--;
+            ans++;
+            while(1){
+                a[i].first[0] = temp;
+                if(d[a[i].first] == 0){
+                    kq[a[i].second] = a[i].first;
+                    d[a[i].first] = 1;
+                    break;
+                }
+                temp++;
+            }
         }
+        cout << ans << endl;
+        for(int i = 0 ; i < n ; ++i) cout << kq[i] << endl;
     }
-    cout << kq << endl;
 
     return 0;
 }

@@ -46,7 +46,7 @@ inline LL getNext(LL u){
 void InOut(){
 	#define TASK "PAINT"
 	freopen(TASK".inp","r",stdin);
-	freopen(TASK".out","w",stdout);
+	freopen(TASK".ans","w",stdout);
 }
 
 void Subtask1(){
@@ -93,7 +93,7 @@ int main(){
 	cin.tie(0);
 	cout.tie(0);
 	cin >> n;
-	Subtask2();
+	Subtask1();
 
 	return 0;
 }

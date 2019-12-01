@@ -31,12 +31,12 @@ template <typename T> void read(T &t){
     do { (t *= 10) += ch - '0'; ch = getchar(); } while (isdigit(ch)); t *= f;
 }
 
-const LL MaxN = 1 + 1e6;
+const LL MaxN = 1 + 1e5;
 
-LL n, a[MaxN], d[MaxN], kq;
+LL n, a[MaxN], t, x, y, z;
 
 void InOut(){
-    #define TASK "NKLP"
+    #define TASK "ABC"
     freopen(TASK".inp","r",stdin);
     freopen(TASK".out","w",stdout);
 }
@@ -46,24 +46,25 @@ int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    cin >> n;
-    for(int i = 0 ; i < n ; ++i) cin >> a[i];
-    LL j = 0, s = 0;
-    for(int i = 0 ; i < n ; ++i){
-        d[a[i]]++;
-        s += a[i];
-        while(j < i && d[a[i]] > 1){
-            d[a[j]]--;
-            s -= a[j];
-            j++;
+    cin >> t;
+    for(int te = 0 ; te < t ; ++te){
+        LL kq = 0;
+        cin >> a[0] >> a[1] >> a[2];
+        sort(a, a + 3);
+        LL hs = abs(a[1] - a[2]);
+        if (a[0] >= hs) kq = hs, a[2] -= hs, a[0] = a[0] - hs;
+        else {
+            kq = a[0];
+            a[2] -= hs;
+            a[0] = 0;
         }
-        LL s1 = s;
-        for(LL k = j ; k <= i ; ++k){
-            if((i - k + 2) * (i - k + 1) / 2 == s1) kq = max(kq, i - k + 1);
-            s1 -= a[k];
-        }
+        LL d = a[0] / 2;
+        //cout << a[0] << " " << a[1] << " " << a[2] << "\n";
+        kq += d * 2;
+        a[1] -= d, a[2] -= d;
+        kq += a[1];
+        cout << kq << endl;
     }
-    cout << kq << endl;
 
     return 0;
 }
