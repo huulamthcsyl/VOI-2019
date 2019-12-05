@@ -5,6 +5,7 @@
 using namespace std;
 
 typedef long long LL;
+typedef pair<LL, LL> II;
 
 #define y0 Sword_Art_Online
 #define y1 Your_lie_in_April
@@ -31,23 +32,32 @@ template <typename T> void read(T &t){
 	do { (t *= 10) += ch - '0'; ch = getchar(); } while (isdigit(ch)); t *= f;
 }
 
-const LL MaxN = 1 + 2e7;
+const LL MaxN = 1 + 3e5, MOD = 1e9 + 7;
 
-LL n, a[16] = {1, 3, 5, 10, 30, 50, 100, 300, 500, 1000, 3000, 5000, 10000, 30000, 50000}, d[MaxN], x, t, ma;
-pair<LL, LL> c[51];
+LL n, a[MaxN], x, y, z, kq;
 
-LL Calc(LL k){
-    LL kq = 0;
-    for(int i = 14 ; i >= 0 ; --i){
-        kq += k / a[i];
-        k %= a[i];
+map<II, LL> d;
+vector<II> q;
+
+LL GCD(LL x, LL y){
+    if(x < y) swap(x, y);
+    while(y){
+        LL tg = y;
+        y = x % y;
+        x = tg;
     }
-    if(k) return 1e18;
-    else return kq;
+    return x;
+}
+
+LL Mu(LL a, LL n){
+    if(n == 0) return 1;
+    LL tg = Mu(a, n / 2);
+    if(n % 2) return (((tg * tg) % MOD) * a) % MOD;
+    return (tg * tg) % MOD;
 }
 
 void InOut(){
-	#define TASK "ODDCOIN"
+	#define TASK "TRICOUNT"
 	freopen(TASK".inp","r",stdin);
 	freopen(TASK".out","w",stdout);
 }
@@ -57,32 +67,29 @@ int main(){
 	ios_base::sync_with_stdio(0);
 	cin.tie(0);
 	cout.tie(0);
-	// Subtask1::Solve();
-	cin >> t;
-	for(int te = 0 ; te < t ; ++te){
-        cin >> x >> n;
-        LL k = sqrt(n), kq = 1e18;
-        if(x > k){
-            for(int i = 0 ; i <= n / x ; ++i) kq = min(kq, i + Calc(n - i * x));
-            cout << kq << endl;
-            continue;
+	cin >> n;
+	for(int i = 0 ; i < n ; ++i){
+        cin >> x >> y >> z;
+        LL m = GCD(x, y);
+        x /= m;
+        y /= m;
+        if(x < 0){
+            x *= -1;
+            y *= -1;
         }
-        memset(d, 0x3f3f, sizeof d);
-        d[0] = 0;
-        for(int i = 1 ; i <= 200000 ; ++i){
-            for(int j = 0 ; j < 15 ; ++j)
-            if(a[j] <= i) d[i] = min(d[i], d[i - a[j]] + 1);
-            else break;
-            if(x <= i) d[i] = min(d[i], d[i - x] + 1);
-        }
-        if(n <= 200000){
-            cout << d[n] << endl;
-            continue;
-        }
-        for(int i = 0 ; i <= 200000 ; ++i)
-        kq = min(kq, d[i] * (n / i) + d[n % i]);
-        cout << kq << endl;
-    }
+        d[{x, y}]++;
+        if(d[{x, y}] == 1) q.push_back({x, y});
+	}
+	LL s = 0, s1 = 0;
+	for(int i = 0 ; i < q.size() ; ++i){
+        s += d[q[i]];
+        s1 += d[q[i]] * d[q[i]];
+	}
+	for(int i = 0 ; i < q.size() ; ++i){
+        LL x1 = s - d[q[i]], x2 = s1 - d[q[i]] * d[q[i]];
+        kq = (kq + (d[q[i]] * (((x1 * x1 - x2) / 2) % MOD) % MOD)) % MOD;
+	}
+	cout << (kq * Mu(3, MOD - 2)) % MOD << endl;
 
 	return 0;
 }

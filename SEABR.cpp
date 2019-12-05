@@ -5,6 +5,7 @@
 using namespace std;
 
 typedef long long LL;
+typedef pair<double, LL> II;
 
 #define y0 Sword_Art_Online
 #define y1 Your_lie_in_April
@@ -31,23 +32,34 @@ template <typename T> void read(T &t){
 	do { (t *= 10) += ch - '0'; ch = getchar(); } while (isdigit(ch)); t *= f;
 }
 
-const LL MaxN = 1 + 2e7;
+const LL MaxN = 1 + 1e5;
 
-LL n, a[16] = {1, 3, 5, 10, 30, 50, 100, 300, 500, 1000, 3000, 5000, 10000, 30000, 50000}, d[MaxN], x, t, ma;
-pair<LL, LL> c[51];
+LL n, a[MaxN], d[MaxN], vis[MaxN], k, vc, vp, x, y, z;
+priority_queue<II> pq;
+vector<LL> q[MaxN];
 
-LL Calc(LL k){
-    LL kq = 0;
-    for(int i = 14 ; i >= 0 ; --i){
-        kq += k / a[i];
-        k %= a[i];
+struct Edge{
+
+    LL u, v, len;
+
+    Edge(LL _u = 0, LL _v = 0, LL _len = 0):u(_u), v(_v), len(_len){}
+
+} e[MaxN];
+
+void DFS(LL u){
+    vis[u] = 1;
+    d[u] = 1;
+    for(auto i : q[u]){
+        LL v = e[i].u + e[i].v - u;
+        if(!vis[v]){
+            DFS(v);
+            d[u] += d[v];
+        }
     }
-    if(k) return 1e18;
-    else return kq;
 }
 
 void InOut(){
-	#define TASK "ODDCOIN"
+	#define TASK "SEABR"
 	freopen(TASK".inp","r",stdin);
 	freopen(TASK".out","w",stdout);
 }
@@ -57,31 +69,24 @@ int main(){
 	ios_base::sync_with_stdio(0);
 	cin.tie(0);
 	cout.tie(0);
-	// Subtask1::Solve();
-	cin >> t;
-	for(int te = 0 ; te < t ; ++te){
-        cin >> x >> n;
-        LL k = sqrt(n), kq = 1e18;
-        if(x > k){
-            for(int i = 0 ; i <= n / x ; ++i) kq = min(kq, i + Calc(n - i * x));
-            cout << kq << endl;
-            continue;
-        }
-        memset(d, 0x3f3f, sizeof d);
-        d[0] = 0;
-        for(int i = 1 ; i <= 200000 ; ++i){
-            for(int j = 0 ; j < 15 ; ++j)
-            if(a[j] <= i) d[i] = min(d[i], d[i - a[j]] + 1);
-            else break;
-            if(x <= i) d[i] = min(d[i], d[i - x] + 1);
-        }
-        if(n <= 200000){
-            cout << d[n] << endl;
-            continue;
-        }
-        for(int i = 0 ; i <= 200000 ; ++i)
-        kq = min(kq, d[i] * (n / i) + d[n % i]);
-        cout << kq << endl;
+	cin >> n >> k >> vp >> vc;
+	for(int i = 0 ; i < n - 1 ; ++i){
+        cin >> x >> y >> z;
+        e[i] = Edge(x, y, z);
+        q[x].push_back(i);
+        q[y].push_back(i);
+	}
+	DFS(1);
+	// cout << d[1] << endl;
+	for(int i = 0 ; i < n - 1 ; ++i){
+        LL x1 = min(d[e[i].u], d[e[i].v]), x2 = n - x1;
+        double temp = double(e[i].len) / (vc - vp) * (x1 * x2);
+        // cout << temp << endl;
+        pq.push({temp, i});
+	}
+	for(int i = 0 ; i < k ; ++i){
+        cout << pq.top().second + 1 << endl;
+        pq.pop();
     }
 
 	return 0;

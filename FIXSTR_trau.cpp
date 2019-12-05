@@ -149,7 +149,7 @@ class Tree{
 void InOut(){
 	#define TASK "FIXSTR"
 	freopen(TASK".inp","r",stdin);
-	freopen(TASK".out","w",stdout);
+	freopen(TASK".ans","w",stdout);
 }
 
 int main(){
@@ -160,37 +160,7 @@ int main(){
 	cin >> s;
 	cin >> q;
 	s = " " + s;
-    // Subtask1();
-    LL n = s.length();
-    tree.Build(1, 1, n);
-    for(int i = 1 ; i <= n ; ++i){
-        if(s[i] == '(') tree.Update(i, n, 1);
-        else tree.Update(i, n, -1);
-    }
-    // cout << tree.QueryMin(1, 6) << endl;
-	for(int te = 0 ; te < q ; ++te){
-        cin >> quest;
-        if(quest == 'C'){
-            cin >> x;
-            if(s[x] == '('){
-                s[x] = ')';
-                tree.Update(x, n, -2);
-                continue;
-            }
-            if(s[x] == ')'){
-                s[x] = '(';
-                tree.Update(x, n, 2);
-                continue;
-            }
-        }
-        if(quest == 'Q'){
-            cin >> x >> y;
-            LL temp = tree.QuerySum(x - 1, x - 1), minu = tree.QueryMin(x, y) - temp;
-            if(minu > 0) cout << minu << endl;
-            else cout << -minu + tree.QuerySum(y, y) - tree.QuerySum(x - 1, x - 1) - minu << endl;
-            // cout << endl;
-        }
-    }
+    Subtask1();
 
 	return 0;
 }

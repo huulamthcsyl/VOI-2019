@@ -33,53 +33,13 @@ template <typename T> void read(T &t){
 
 const LL MaxN = 1 + 1e6;
 
-LL n, a[MaxN], query, nxt[27];
-vector<pair<LL, LL> > change;
-char ch, ch1, ch2;
-string s;
+LL n, a[MaxN], kq, b[MaxN];
+vector<LL> q;
 
 void InOut(){
-	#define TASK "PAINT"
+	#define TASK "BRICKS"
 	freopen(TASK".inp","r",stdin);
 	freopen(TASK".out","w",stdout);
-}
-
-void Subtask1(){
-    for(int i = 0 ; i < n ; ++i){
-        cin >> query;
-        if(query == 1){
-            cin >> ch;
-            s += ch;
-            continue;
-        }
-        LL m = s.length();
-        cin >> ch1 >> ch2;
-        for(int i = 0 ; i < m ; ++i)
-        if(s[i] == ch1) s[i] = ch2;
-	}
-	cout << s << endl;
-}
-
-void Subtask2(){
-    for(int i = 0 ; i < n ; ++i){
-        cin >> query;
-        if(query == 1){
-            cin >> ch;
-            change.push_back({-1, ch - 'a'});
-            continue;
-        }
-        cin >> ch1 >> ch2;
-        change.push_back({ch1 - 'a', ch2 - 'a'});
-	}
-	for(int i = 0 ; i < 26 ; ++i) nxt[i] = i;
-	for(int i = change.size() - 1 ; i >= 0 ; --i)
-    if(change[i].first == -1){
-        LL temp = nxt[change[i].second];
-        s = char(temp + 'a') + s;
-    } else{
-        nxt[change[i].first] = nxt[change[i].second];
-    }
-    cout << s << endl;
 }
 
 int main(){
@@ -88,7 +48,23 @@ int main(){
 	cin.tie(0);
 	cout.tie(0);
 	cin >> n;
-	Subtask2();
+	for(int i = 1 ; i <= n ; ++i) cin >> a[i];
+	for(int i = 1 ; i <= n ; ++i) cin >> b[i];
+	for(int i = 1 ; i <= n / 2 ; ++i){
+        a[n / 2 + 1 - i] -= i;
+        b[n / 2 + 1 - i] -= i;
+        a[n / 2 + 1 + i] -= i;
+        b[n / 2 + 1 + i] -= i;
+	}
+	for(int i = 1 ; i <= n ; ++i){
+        q.push_back(a[i]);
+        q.push_back(b[i]);
+	}
+	sort(q.begin(), q.end());
+	// for(int i : q) cout << i << " ";
+	// cout << endl;
+	for(int i : q) kq += abs(i - q[n]);
+	cout << kq << endl;
 
 	return 0;
 }

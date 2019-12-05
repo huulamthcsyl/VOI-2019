@@ -7,6 +7,8 @@
         "random": "cpp",
         "limits": "cpp",
         "valarray": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "*.tcc": "cpp",
+        "regex": "cpp"
     }
 }

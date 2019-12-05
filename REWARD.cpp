@@ -1,5 +1,7 @@
 // Code by Nguyen Huu Lam
 #include<bits/stdc++.h>
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
 using namespace std;
 
 typedef long long LL;
@@ -16,6 +18,7 @@ typedef long long LL;
 #define prev Five_centimeters_per_second
 #define hash Slient_voice
 
+#define ordered_set tree<LL, null_type, less<LL>, rb_tree_tag, tree_order_statistics_node_update>
 mt19937_64 rng(chrono::high_resolution_clock::now().time_since_epoch().count());
 
 LL Rand(LL l, LL h){
@@ -30,7 +33,7 @@ template <typename T> void read(T &t){
 
 const LL MaxN = 1 + 1e5;
 
-LL n, a[MaxN], x, d[MaxN], kq, l[MaxN], r[MaxN], s, b[MaxN];
+LL n, a[MaxN], x, d[MaxN][2];
 
 void InOut(){
     #define TASK "REWARD"
@@ -43,17 +46,15 @@ int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    read(n);
-    for(int i = 1 ; i <= n ; ++i){
-        read(b[i]);
-        d[b[i]]++;
+    cin >> n;
+    for(int i = 1 ; i <= n ; ++i) cin >> a[i];
+    d[1][0] = 0;
+    d[1][1] = a[1];
+    for(int i = 2 ; i <= n ; ++i){
+        d[i][0] = max(d[i - 1][0], d[i - 1][1]);
+        d[i][1] = max(d[i - 2][0] + a[i] + a[i - 1], d[i - 1][0] + a[i]);
     }
-    l[1] = d[1];
-    for(int i = 2 ; i <= 1e4 ; ++i) l[i] = max(l[i - 1], l[i - 2] + d[i] * i);
-    r[10000] = d[10000] * 10000;
-    for(int i = 1e4 - 1 ; i > 0 ; --i) r[i] = max(r[i + 1], r[i + 2] + d[i] * i);
-    for(int i = 1 ; i <= 1e4 ; ++i) kq = max(kq, l[i] + r[i] - d[i] * i);
-    cout << kq << endl;
+    cout << max(d[n][0], d[n][1]) << endl;
 
     return 0;
 }

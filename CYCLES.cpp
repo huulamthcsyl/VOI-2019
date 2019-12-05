@@ -31,55 +31,21 @@ template <typename T> void read(T &t){
 	do { (t *= 10) += ch - '0'; ch = getchar(); } while (isdigit(ch)); t *= f;
 }
 
-const LL MaxN = 1 + 1e6;
+const LL MaxN = 1 + 1e3;
 
-LL n, a[MaxN], query, nxt[27];
-vector<pair<LL, LL> > change;
-char ch, ch1, ch2;
-string s;
+LL n, a[MaxN], b[MaxN], f[MaxN][MaxN], g[MaxN][MaxN], ma, mi = 1e18;
+
+LL Calc(LL l, LL r){
+    if(f[l][r] != -1) return f[l][r];
+    LL ma = 0;
+    for(int i = l + 1 ; i < r ; ++i) ma = max(ma, Calc(l, i) + Calc(i, r));
+    return f[l][r] = g[l][r] + ma;
+}
 
 void InOut(){
-	#define TASK "PAINT"
+	#define TASK "CYCLES"
 	freopen(TASK".inp","r",stdin);
 	freopen(TASK".out","w",stdout);
-}
-
-void Subtask1(){
-    for(int i = 0 ; i < n ; ++i){
-        cin >> query;
-        if(query == 1){
-            cin >> ch;
-            s += ch;
-            continue;
-        }
-        LL m = s.length();
-        cin >> ch1 >> ch2;
-        for(int i = 0 ; i < m ; ++i)
-        if(s[i] == ch1) s[i] = ch2;
-	}
-	cout << s << endl;
-}
-
-void Subtask2(){
-    for(int i = 0 ; i < n ; ++i){
-        cin >> query;
-        if(query == 1){
-            cin >> ch;
-            change.push_back({-1, ch - 'a'});
-            continue;
-        }
-        cin >> ch1 >> ch2;
-        change.push_back({ch1 - 'a', ch2 - 'a'});
-	}
-	for(int i = 0 ; i < 26 ; ++i) nxt[i] = i;
-	for(int i = change.size() - 1 ; i >= 0 ; --i)
-    if(change[i].first == -1){
-        LL temp = nxt[change[i].second];
-        s = char(temp + 'a') + s;
-    } else{
-        nxt[change[i].first] = nxt[change[i].second];
-    }
-    cout << s << endl;
 }
 
 int main(){
@@ -88,7 +54,15 @@ int main(){
 	cin.tie(0);
 	cout.tie(0);
 	cin >> n;
-	Subtask2();
+	for(int i = 0 ; i < n ; ++i){
+        cin >> a[i] >> b[i];
+        a[i] += 100;
+        mi = min(mi, a[i] - b[i]);
+        ma = max(ma, a[i] + b[i]);
+        g[a[i] - b[i]][a[i] + b[i]] = 1;
+	}
+	memset(f, 0xff, sizeof f);
+	cout << n - Calc(mi, ma) << endl;
 
 	return 0;
 }

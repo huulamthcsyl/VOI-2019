@@ -31,55 +31,21 @@ template <typename T> void read(T &t){
 	do { (t *= 10) += ch - '0'; ch = getchar(); } while (isdigit(ch)); t *= f;
 }
 
-const LL MaxN = 1 + 1e6;
+const LL MaxN = 4 + 2e6, MOD = 1e9 + 7;
 
-LL n, a[MaxN], query, nxt[27];
-vector<pair<LL, LL> > change;
-char ch, ch1, ch2;
-string s;
+LL n, a[MaxN], k, gt[MaxN], t;
+
+LL Mu(LL a, LL n){
+    if(n == 0) return 1;
+    LL tg = Mu(a, n / 2);
+    if(n % 2) return (((tg * tg) % MOD) * a) % MOD;
+    return (tg * tg) % MOD;
+}
 
 void InOut(){
-	#define TASK "PAINT"
+	#define TASK "NWAYS"
 	freopen(TASK".inp","r",stdin);
 	freopen(TASK".out","w",stdout);
-}
-
-void Subtask1(){
-    for(int i = 0 ; i < n ; ++i){
-        cin >> query;
-        if(query == 1){
-            cin >> ch;
-            s += ch;
-            continue;
-        }
-        LL m = s.length();
-        cin >> ch1 >> ch2;
-        for(int i = 0 ; i < m ; ++i)
-        if(s[i] == ch1) s[i] = ch2;
-	}
-	cout << s << endl;
-}
-
-void Subtask2(){
-    for(int i = 0 ; i < n ; ++i){
-        cin >> query;
-        if(query == 1){
-            cin >> ch;
-            change.push_back({-1, ch - 'a'});
-            continue;
-        }
-        cin >> ch1 >> ch2;
-        change.push_back({ch1 - 'a', ch2 - 'a'});
-	}
-	for(int i = 0 ; i < 26 ; ++i) nxt[i] = i;
-	for(int i = change.size() - 1 ; i >= 0 ; --i)
-    if(change[i].first == -1){
-        LL temp = nxt[change[i].second];
-        s = char(temp + 'a') + s;
-    } else{
-        nxt[change[i].first] = nxt[change[i].second];
-    }
-    cout << s << endl;
 }
 
 int main(){
@@ -87,8 +53,14 @@ int main(){
 	ios_base::sync_with_stdio(0);
 	cin.tie(0);
 	cout.tie(0);
-	cin >> n;
-	Subtask2();
+	gt[0] = 1;
+	for(int i = 1 ; i <= 2e6 + 3 ; ++i) gt[i] = (gt[i - 1] * i) % MOD;
+	cin >> t;
+	for(int te = 0 ; te < t ; ++te){
+        cin >> n >> k;
+        LL x = (gt[k + 2] * gt[n - 1]) % MOD;
+        cout << (2 * gt[n + k + 1] * Mu(x, MOD - 2) - n) % MOD << endl;
+	}
 
 	return 0;
 }

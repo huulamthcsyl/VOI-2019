@@ -49,7 +49,7 @@ LL Calc(LL n){
 }
 
 void InOut(){
-	#define TASK "MINE"
+	#define TASK "ABC"
 	freopen(TASK".inp","r",stdin);
 	freopen(TASK".out","w",stdout);
 }
@@ -71,11 +71,9 @@ int main(){
 	d[0] = 1;
 	// cout << Calc(4) << endl;
 	for(int i = 1 ; i <= n ; ++i){
-        LL j = i - 1;
-        if(a[i] - a[j] > m) continue;
-        while(j > 0 && a[i] - a[j] <= m) j -= 2;
-        j += 2;
-        d[i] = d[j - 1] * Calc(i - j + 1);
+        for(int j = i - 1 ; j > 0 ; j -= 2)
+		if(a[i] - a[j] <= m) d[i] = (d[i] + d[j - 1] * Calc(i - j - 1)) % MOD;
+		else break;
 	}
 	cout << d[n] << endl;
 

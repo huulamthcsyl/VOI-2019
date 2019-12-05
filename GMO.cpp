@@ -31,55 +31,15 @@ template <typename T> void read(T &t){
 	do { (t *= 10) += ch - '0'; ch = getchar(); } while (isdigit(ch)); t *= f;
 }
 
-const LL MaxN = 1 + 1e6;
+const LL MaxN = 1 + 1e4;
 
-LL n, a[MaxN], query, nxt[27];
-vector<pair<LL, LL> > change;
-char ch, ch1, ch2;
-string s;
+LL n, a[MaxN], d[10010][5010];
+string s1, s2;
 
 void InOut(){
-	#define TASK "PAINT"
+	#define TASK "GMO"
 	freopen(TASK".inp","r",stdin);
 	freopen(TASK".out","w",stdout);
-}
-
-void Subtask1(){
-    for(int i = 0 ; i < n ; ++i){
-        cin >> query;
-        if(query == 1){
-            cin >> ch;
-            s += ch;
-            continue;
-        }
-        LL m = s.length();
-        cin >> ch1 >> ch2;
-        for(int i = 0 ; i < m ; ++i)
-        if(s[i] == ch1) s[i] = ch2;
-	}
-	cout << s << endl;
-}
-
-void Subtask2(){
-    for(int i = 0 ; i < n ; ++i){
-        cin >> query;
-        if(query == 1){
-            cin >> ch;
-            change.push_back({-1, ch - 'a'});
-            continue;
-        }
-        cin >> ch1 >> ch2;
-        change.push_back({ch1 - 'a', ch2 - 'a'});
-	}
-	for(int i = 0 ; i < 26 ; ++i) nxt[i] = i;
-	for(int i = change.size() - 1 ; i >= 0 ; --i)
-    if(change[i].first == -1){
-        LL temp = nxt[change[i].second];
-        s = char(temp + 'a') + s;
-    } else{
-        nxt[change[i].first] = nxt[change[i].second];
-    }
-    cout << s << endl;
 }
 
 int main(){
@@ -87,8 +47,22 @@ int main(){
 	ios_base::sync_with_stdio(0);
 	cin.tie(0);
 	cout.tie(0);
-	cin >> n;
-	Subtask2();
+	cin >> s1;
+	cin >> s2;
+	cin >> a['A'] >> a['C'] >> a['G'] >> a['T'];
+	LL n = s1.length(), m = s2.length();
+	s1 = " " + s1;
+	s2 = " " + s2;
+	LL ma = 0;
+	for(int i = 1 ; i <= n ; ++i)
+    for(int j = 1 ; j <= m ; ++j){
+        if(s1[i] == s2[j]) d[i][j] = max(d[i][j], d[i - 1][j - 1] + a[s1[i]]);
+        else d[i][j] = d[i][j - 1];
+        ma = max(ma, d[i][j]);
+    }
+    LL k = 0;
+    for(int i = 1 ; i <= m ; ++i) k += a[s2[i]];
+    cout << k - ma << endl;
 
 	return 0;
 }
