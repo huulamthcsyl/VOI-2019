@@ -34,7 +34,7 @@ template <typename T> void read(T &t){
 
 const LL MaxN = 1 + 1e3;
 
-LL n, f[MaxN][MaxN], kq;
+LL n, f[MaxN][MaxN], kq, l, h;
 II a[MaxN];
 
 inline LL ccw(II x, II y, II z){
@@ -46,7 +46,7 @@ inline LL cmp(II x, II y){
 }
 
 void InOut(){
-	#define TASK "DPOLY"
+	#define TASK "ABC"
 	freopen(TASK".inp","r",stdin);
 	freopen(TASK".out","w",stdout);
 }
