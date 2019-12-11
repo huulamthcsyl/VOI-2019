@@ -69,7 +69,7 @@ class Tree{
 
     LL Find(LL node){
         if(qi > ri[node] || le[node] > qj) return 1e18;
-        if(qi <= le[node] || ri[node] <= qj) return TNode[node].val;
+        if(qi <= le[node] && ri[node] <= qj) return TNode[node].val;
         Push(node);
         return min(Find(node * 2), Find(node * 2 + 1));
     }
