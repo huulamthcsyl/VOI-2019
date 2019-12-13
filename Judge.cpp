@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 // Tên chương trình
-const string NAME = "FIXSTR";
+const string NAME = "RATING";
 // Số test kiểm tra
 const int NTEST = 100;
 
@@ -18,36 +18,15 @@ int main()
     {
         ofstream inp((NAME + ".inp").c_str());
         // Code phần sinh test ở đây
-
-        int n = Rand( 1 , 6 ) ;
-
-        int m = Rand( 1 , 6 ) ;
-
-        for(int i = 1 ; i <= n ; ++i ) if( Rand( 1 , 1000 ) % 2 )  inp << '(' ; else inp << ')' ;
-
-        inp << '\n' << m << '\n' ;
-
-        for(int i = 1 ; i <= m ; ++i)
-        {
-            int type = Rand( 1 , 2 ) ;
-
-            char c ;
-
-            if( type == 1 ) c = 'C' ;
-            else c = 'Q' ;
-
-            inp << c << ' ' ;
-
-            if( type == 1 ) inp << Rand( 1 , n ) << '\n' ;
-            else
-            {
-                int l = Rand( 1 , n - 1 ) ;
-                int r = Rand( l + 1 , n ) ;
-
-                inp << l << ' ' << r << '\n' ;
-            }
+        inp << 4 << endl;
+        int n = Rand(1, 30000), q = Rand(1, 10000);
+        inp << n << " " << q << endl;
+        for(int i = 0 ; i < n ; ++i) inp << Rand(0, 100000000) << " ";
+        inp << endl;
+        for(int i = 0 ; i < q ; ++i){
+            int x = Rand(-10000000, 200000000), l = Rand(1, n), r = Rand(l, n);
+            inp << x << " " << l << " " << r << endl;
         }
-        
 
         inp.close();
 

@@ -31,7 +31,7 @@ template <typename T> void read(T &t){
     do { (t *= 10) += ch - '0'; ch = getchar(); } while (isdigit(ch)); t *= f;
 }
 
-const LL MaxN = 1 + 3e5;
+const LL MaxN = 1 + 1e5;
 
 LL n, a[MaxN], subtask, q, k, l, r, d[MaxN];
 
@@ -61,58 +61,10 @@ namespace Subtask2{
     }
 }
 
-namespace Subtask3{
-    void Solve(){
-        cin >> n >> q;
-        for(int i = 1 ; i <= n ; ++i) cin >> a[i];
-        for(int te = 0 ; te < q ; ++te){
-            cin >> k >> l >> r;
-            if(k - a[1] * (r - l + 1) > 0){
-                cout << k - a[1] * (r - l + 1) << endl;
-                continue;
-            }
-            LL x = k % a[1], y = (r - l + 1) - k / a[1];
-            if(y % 2) cout << abs(x - a[1]) << endl;
-            else cout << x << endl;
-        }
-    }
-}
-
-namespace Subtask4{
-    void Solve(){
-        cin >> n >> q;
-        for(int i = 1 ; i <= n ; ++i){
-            cin >> a[i];
-            d[i] = d[i - 1] + a[i];
-        }
-        for(int te = 0 ; te < q ; ++te){
-            cin >> k >> l >> r;
-            if(k - (d[r] - d[l - 1]) >= 0){
-                k -= (d[r] - d[l - 1]);
-                cout << k << endl;
-                continue;
-            }
-            k += d[l - 1];
-            while(l <= r){
-                if(k - d[r] >= 0){
-                    k -= d[r];
-                    break;
-                }
-                LL pos = upper_bound(d + l, d + r + 1, k) - d;
-                k = abs(k - d[pos]);
-                l = pos + 1;
-                if(l > r) break;
-                k += d[pos];
-            }
-            cout << k << endl;
-        }
-    }
-}
-
 void InOut(){
     #define TASK "RATING"
     freopen(TASK".inp","r",stdin);
-    freopen(TASK".out","w",stdout);
+    freopen(TASK".ans","w",stdout);
 }
 
 int main(){
@@ -121,22 +73,7 @@ int main(){
     cin.tie(0);
     cout.tie(0);
     cin >> subtask;
-    if(subtask == 1){
-        Subtask1::Solve();
-        return 0;
-    }
-    if(subtask == 2){
-        Subtask2::Solve();
-        return 0;
-    }
-    if(subtask == 3){
-        Subtask3::Solve();
-        return 0;
-    }
-    if(subtask == 4){
-        Subtask4::Solve();
-        return 0;
-    }
+    Subtask1::Solve();
 
     return 0;
 }
