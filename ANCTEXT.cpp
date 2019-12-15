@@ -92,6 +92,6 @@ int main(){
         while(i + 1 <= n && isSmaller(a[i + 1].first, s1)) i++;
         cout << a[i].second << endl;
 	}
-
+    
 	return 0;
 }
