@@ -156,6 +156,8 @@ int main(){
         z *= cnt;
         // cout << x << " " << y << " " << z << endl;
         tree.Update(x, y, z);
+        if(y >= n) tree.Update(0, y - n, z);
+        else tree.Update(x + n, y + n, z);
     }
 
     return 0;

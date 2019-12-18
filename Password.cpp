@@ -3,7 +3,6 @@
 #include<ext/pb_ds/assoc_container.hpp>
 #include<ext/pb_ds/tree_policy.hpp>
 using namespace std;
-using namespace __gnu_pbds;
 
 typedef long long LL;
 
@@ -32,9 +31,20 @@ template <typename T> void read(T &t){
     do { (t *= 10) += ch - '0'; ch = getchar(); } while (isdigit(ch)); t *= f;
 }
 
-const LL MaxN = 1 + 1e5;
+const LL MaxN = 1 + 1e6, BASE = 337, MOD = 1e9 + 7;
 
-LL n, a[MaxN];
+LL n, a[MaxN], po[MaxN], d[MaxN];
+string s;
+
+inline LL getHash(LL l, LL r){
+    return (d[r] - d[l - 1] * po[r - l + 1] + MOD * MOD) % MOD;
+}
+
+LL Check(LL k, LL hashCode){
+    for(int i = 2 ; i <= n - k ; ++i)
+    if(getHash(i, i + k - 1) == hashCode) return 1;
+    return 0;
+}
 
 void InOut(){
     #define TASK "ABC"
@@ -43,10 +53,26 @@ void InOut(){
 }
 
 int main(){
-    InOut();
+    // InOut();
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
+    cin >> s;
+    n = s.length();
+    s = " " + s;
+    po[0] = 1;
+    for(int i = 1 ; i <= n ; ++i) po[i] = (po[i - 1] * BASE) % MOD;
+    for(int i = 1 ; i <= n ; ++i) d[i] = (d[i - 1] * BASE + (s[i] - 'a' + 1)) % MOD;
+    // for(int i = 1 ; i <= n ; ++i) cout << d[i] << " ";
+    // cout << endl;
+    // cout << (getHash(1, 8) == getHash(3, 10)) << endl;
+    // cout << Check(8, getHash(1, 8)) << endl;
+    for(int i = n ; i > 0 ; --i)
+    if(getHash(1, i) == getHash(n - i + 1, n) && Check(i, getHash(1, i))){
+        cout << s.substr(1, i) << endl;
+        return 0;
+    }
+    cout << "Just a legend" << endl;
 
     return 0;
 }

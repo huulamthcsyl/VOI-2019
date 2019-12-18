@@ -3,7 +3,6 @@
 #include<ext/pb_ds/assoc_container.hpp>
 #include<ext/pb_ds/tree_policy.hpp>
 using namespace std;
-using namespace __gnu_pbds;
 
 typedef long long LL;
 
@@ -32,9 +31,10 @@ template <typename T> void read(T &t){
     do { (t *= 10) += ch - '0'; ch = getchar(); } while (isdigit(ch)); t *= f;
 }
 
-const LL MaxN = 1 + 1e5;
+const LL MaxN = 1 + 2e5;
 
-LL n, a[MaxN];
+LL n, a[MaxN], x, d[MaxN], k, kq;
+unordered_map<LL, LL> cnt;
 
 void InOut(){
     #define TASK "ABC"
@@ -43,10 +43,29 @@ void InOut(){
 }
 
 int main(){
-    InOut();
+    // InOut();
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
+    cin >> n >> k;
+    for(int i = 1 ; i <= n ; ++i){
+        cin >> x;
+        x--;
+        d[i] = d[i - 1] + x;
+    }
+    LL j = 0;
+    cnt[0]++;
+    for(int i = 1 ; i <= n ; ++i){
+        LL temp = d[i] % k;
+        if(i - j + 1 > k){
+            cnt[d[j] % k]--;
+            j++;
+        }
+        kq += cnt[temp];
+        // cout << s.count(temp) << endl;
+        cnt[temp]++;
+    }
+    cout << kq << endl;
 
     return 0;
 }

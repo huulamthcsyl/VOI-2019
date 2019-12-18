@@ -3,7 +3,6 @@
 #include<ext/pb_ds/assoc_container.hpp>
 #include<ext/pb_ds/tree_policy.hpp>
 using namespace std;
-using namespace __gnu_pbds;
 
 typedef long long LL;
 
@@ -34,7 +33,30 @@ template <typename T> void read(T &t){
 
 const LL MaxN = 1 + 1e5;
 
-LL n, a[MaxN];
+LL n, a[MaxN], m, x, y, deg[MaxN], kq, vis[MaxN], ans[MaxN];
+vector<LL> q[MaxN];
+
+class Edge{
+
+    public:
+        LL u, v, id;
+
+        Edge(LL _u = 0, LL _v = 0, LL _id = 0):u(_u), v(_v), id(_id){}
+
+} e[MaxN];
+
+void DFS(LL u, LL color){
+    vis[u] = 1;
+    LL cnt = 0;
+    for(int i : q[u]){
+        LL v = e[i].u + e[i].v - u;
+        if(vis[v]) continue;
+        cnt++;
+        if(cnt == color) cnt++;
+        ans[e[i].id] = cnt;
+        DFS(v, cnt);
+    }
+}
 
 void InOut(){
     #define TASK "ABC"
@@ -43,10 +65,23 @@ void InOut(){
 }
 
 int main(){
-    InOut();
+    // InOut();
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
+    cin >> n;
+    for(int i = 0 ; i < n - 1 ; ++i){
+        cin >> x >> y;
+        e[i] = Edge(x, y, i);
+        deg[x]++;
+        deg[y]++;
+        q[x].push_back(i);
+        q[y].push_back(i);
+        kq = max(kq, max(deg[x], deg[y]));
+    }
+    cout << kq << endl;
+    DFS(1, 0);
+    for(int i = 0 ; i < n - 1 ; ++i) cout << ans[i] << endl;
 
     return 0;
 }

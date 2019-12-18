@@ -32,9 +32,9 @@ template <typename T> void read(T &t){
     do { (t *= 10) += ch - '0'; ch = getchar(); } while (isdigit(ch)); t *= f;
 }
 
-const LL MaxN = 1 + 1e5;
+const LL MaxN = 10 + 3e3;
 
-LL n, a[MaxN];
+LL n, a[MaxN], d1[MaxN][MaxN], b[MaxN], k, d2[MaxN][MaxN], kq;
 
 void InOut(){
     #define TASK "ABC"
@@ -43,10 +43,26 @@ void InOut(){
 }
 
 int main(){
-    InOut();
+    // InOut();
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
+    cin >> n >> k;
+    for(int i = 1 ; i <= n ; ++i) cin >> a[i] >> b[i];
+    for(int i = 1 ; i <= n ; ++i)
+    for(int j = 1 ; j <= k ; ++j){
+        d1[i][j] = d1[i - 1][j];
+        if(j >= a[i]) d1[i][j] = max(d1[i][j], d1[i - 1][j - a[i]] + b[i]);
+    }
+    for(int i = n ; i > 0 ; --i)
+    for(int j = 1 ; j <= k ; ++j){
+        d2[i][j] = d2[i + 1][j];
+        if(j >= a[i]) d2[i][j] = max(d2[i][j], d2[i + 1][j - a[i]] + b[i]);
+    }
+    for(int i = 1 ; i <= n ; ++i)
+    for(int j = 0 ; j <= k - 1 ; ++j)
+    kq = max(kq, d1[i - 1][j] + d2[i + 1][k - 1 - j] + b[i]);
+    cout << kq << endl;
 
     return 0;
 }

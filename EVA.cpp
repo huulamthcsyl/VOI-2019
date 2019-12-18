@@ -3,9 +3,9 @@
 #include<ext/pb_ds/assoc_container.hpp>
 #include<ext/pb_ds/tree_policy.hpp>
 using namespace std;
-using namespace __gnu_pbds;
 
 typedef long long LL;
+typedef pair<LL, LL> II;
 
 #define y0 Sword_Art_Online
 #define y1 Your_lie_in_April
@@ -32,12 +32,14 @@ template <typename T> void read(T &t){
     do { (t *= 10) += ch - '0'; ch = getchar(); } while (isdigit(ch)); t *= f;
 }
 
-const LL MaxN = 1 + 1e5;
+const LL MaxN = 1 + 1e5, INF = 1e18;
 
-LL n, a[MaxN];
+LL n, a[MaxN], k, x, y, m, d[MaxN];
+priority_queue<II, vector<II>, greater<II> > pq;
+vector<LL> q[MaxN];
 
 void InOut(){
-    #define TASK "ABC"
+    #define TASK "EVA"
     freopen(TASK".inp","r",stdin);
     freopen(TASK".out","w",stdout);
 }
@@ -47,6 +49,30 @@ int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
+    cin >> n >> k;
+    fill(d + 1, d + n + 1, INF);
+    for(int i = 0 ; i < k ; ++i){
+        cin >> x;
+        d[x] = 0;
+        pq.push({0, x});
+    }
+    cin >> m;
+    for(int i = 0 ; i < m ; ++i){
+        cin >> x >> y;
+        q[x].push_back(y);
+        q[y].push_back(x);
+    }
+    while(!pq.empty()){
+        II temp = pq.top();
+        pq.pop();
+        LL u = temp.second;
+        for(int v : q[u])
+        if(d[u] + 1 < d[v]){
+            d[v] = d[u] + 1;
+            pq.push({d[v], v});
+        }
+    }
+    for(int i = 1 ; i <= n ; ++i) cout << d[i] << " ";
 
     return 0;
 }

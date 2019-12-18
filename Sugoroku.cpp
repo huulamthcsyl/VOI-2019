@@ -32,9 +32,11 @@ template <typename T> void read(T &t){
     do { (t *= 10) += ch - '0'; ch = getchar(); } while (isdigit(ch)); t *= f;
 }
 
-const LL MaxN = 1 + 1e5;
+const LL MaxN = 10 + 1e5;
 
-LL n, a[MaxN];
+LL n, a[MaxN], k, d[MaxN];
+char s[MaxN];
+vector<LL> ans;
 
 void InOut(){
     #define TASK "ABC"
@@ -43,10 +45,29 @@ void InOut(){
 }
 
 int main(){
-    InOut();
+    // InOut();
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
+    cin >> n >> k;
+    cin >> s;
+    n++;
+    reverse(s, s + n);
+    for(int i = 0 ; i < n ; ++i)
+    if(s[i] == '0') d[i] = i;
+    else d[i] = d[i - 1];
+    LL i = 0;
+    // for(int i = 0 ; i < n ; ++i) cout << d[i] << " ";
+    // cout << endl;
+    while(i < n - 1){
+        if(d[min(n - 1, i + k)] == i){
+            cout << -1 << endl;
+            return 0;
+        }
+        ans.push_back(d[min(n - 1, i + k)] - i);
+        i = d[min(n - 1, i + k)];
+    }
+    for(int i = ans.size() - 1 ; i >= 0 ; --i) cout << ans[i] << " ";
 
     return 0;
 }
