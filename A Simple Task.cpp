@@ -1,11 +1,3 @@
-
-// Problem : E. A Simple Task
-// Contest : Codeforces Round #312 (Div. 2)
-// URL : https://codeforces.com/contest/558/problem/E
-// Memory Limit : 512.000000MB 
-// Time Limit : 5000.000000milisec 
-// Powered by CP Editor (https://github.com/coder3101/cp-editor2)
-
 // Code by Nguyen Huu Lam
 #include<bits/stdc++.h>
 #include<ext/pb_ds/assoc_container.hpp>

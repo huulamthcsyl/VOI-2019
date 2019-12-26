@@ -60,6 +60,7 @@ int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
+    auto st = chrono::high_resolution_clock::now();
     cin >> n;
     for(int i = 0 ; i < n ; ++i) cin >> a[i].first >> a[i].second;
     sort(a, a + n);
@@ -81,6 +82,9 @@ int main(){
     }
     if(s.size() == 1) cout << "YES" << endl;
     else cout << "NO" << endl;
+    auto ed = chrono::high_resolution_clock::now();
+	auto diff = ed - st;
+	cerr << chrono::duration<double, nano> (diff).count() << endl;
 
     return 0;
 }

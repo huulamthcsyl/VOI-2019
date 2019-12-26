@@ -18,8 +18,6 @@ int main()
     {
         ofstream inp((NAME + ".inp").c_str());
         // Code phần sinh test ở đây
-        inp << Rand(5, 8) << " " << Rand(1, 30) << " " << 0 << endl;
-        inp.close();
 
         // Nếu dùng Linux thì "./" + Tên chương trình
         system((NAME + ".exe").c_str());

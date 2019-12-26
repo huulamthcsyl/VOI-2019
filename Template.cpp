@@ -23,30 +23,32 @@ typedef long long LL;
 mt19937_64 rng(chrono::high_resolution_clock::now().time_since_epoch().count());
 
 LL Rand(LL l, LL h){
-    return uniform_int_distribution<LL>(l, h)(rng);
+	return uniform_int_distribution<LL>(l, h)(rng);
 }
 
 template <typename T> void read(T &t){
-    t = 0; char ch = getchar(); int f = 1;
-    while (!isdigit(ch)) { if (ch == '-') f = -1; ch = getchar(); }
-    do { (t *= 10) += ch - '0'; ch = getchar(); } while (isdigit(ch)); t *= f;
+	t = 0; char ch = getchar(); int f = 1;
+	while (!isdigit(ch)) { if (ch == '-') f = -1; ch = getchar(); }
+	do { (t *= 10) += ch - '0'; ch = getchar(); } while (isdigit(ch)); t *= f;
 }
 
 const LL MaxN = 1 + 1e5;
 
 LL n, a[MaxN];
+tuple<LL, LL, LL> b[MaxN];
 
 void InOut(){
-    #define TASK "ABC"
-    freopen(TASK".inp","r",stdin);
-    freopen(TASK".out","w",stdout);
+	#define TASK "ABC"
+	freopen(TASK".inp","r",stdin);
+	freopen(TASK".out","w",stdout);
 }
 
 int main(){
-    InOut();
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
+	InOut();
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
+	cout << get<1>(b[0]) << endl;
 
-    return 0;
+	return 0;
 }

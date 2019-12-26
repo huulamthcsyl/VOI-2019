@@ -32,9 +32,17 @@ template <typename T> void read(T &t){
     do { (t *= 10) += ch - '0'; ch = getchar(); } while (isdigit(ch)); t *= f;
 }
 
-const LL MaxN = 1 + 1e5;
+const LL MaxN = 1 + 3e5;
 
-LL n, a[MaxN], b[MaxN], c[MaxN], d[MaxN], m, k, x, y;
+LL n, a[MaxN], m, x, y, in[MaxN], out[MaxN], vis[MaxN];
+vector<LL> q[MaxN], topo, q1[MaxN], ans;
+
+void DFS(LL u){
+    vis[u] = 1;
+    for(int i : q[u]) 
+    if(!vis[i]) DFS(i);
+    topo.push_back(u);
+}
 
 void InOut(){
     #define TASK "ABC"
@@ -47,14 +55,38 @@ int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    cin >> n >> m >> k;
-    for(int i = 1 ; i <= n ; ++i) cin >> a[i] >> b[i] >> c[i];
-    iota(d + 1, d + n + 1, 1);
+    cin >> n >> m;
     for(int i = 0 ; i < m ; ++i){
         cin >> x >> y;
-        d[y] = max(d[y], x);
+        q[x].push_back(y);
+        q1[y].push_back(x);
     }
     for(int i = 1 ; i <= n ; ++i)
+    if(!vis[i]) DFS(i);
+    reverse(topo.begin(), topo.end());
+    // for(int i : topo) cout << i << " ";
+    // cout << endl;
+    for(int i : topo)
+    for(int j : q[i]) in[j]++;
+    for(int i = 0 ; i < n ; ++i){
+        LL kt = 1;
+        for(int j = 0 ; j < i ; ++j)
+        if(!out[topo[j]]){
+            kt = 0;
+            break;
+        }
+        for(int j = i + 1 ; j < n ; ++j)
+        if(!in[topo[j]]){
+            kt = 0;
+            break;
+        }
+        if(kt) ans.push_back(topo[i]);
+        for(int j : q[topo[i]]) in[j]--;
+        if(i < n - 1) for(int j : q1[topo[i + 1]]) out[j]++;
+    }
+    sort(ans.begin(), ans.end());
+    cout << ans.size() << endl;
+    for(int i : ans) cout << i << " ";
 
     return 0;
 }

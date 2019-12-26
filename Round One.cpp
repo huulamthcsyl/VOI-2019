@@ -34,7 +34,7 @@ template <typename T> void read(T &t){
 
 const LL MaxN = 1 + 1e5;
 
-LL n, a[MaxN], b[MaxN], c[MaxN], d[MaxN], m, k, x, y;
+LL n, a[MaxN], m;
 
 void InOut(){
     #define TASK "ABC"
@@ -43,18 +43,12 @@ void InOut(){
 }
 
 int main(){
-    InOut();
+    // InOut();
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    cin >> n >> m >> k;
-    for(int i = 1 ; i <= n ; ++i) cin >> a[i] >> b[i] >> c[i];
-    iota(d + 1, d + n + 1, 1);
-    for(int i = 0 ; i < m ; ++i){
-        cin >> x >> y;
-        d[y] = max(d[y], x);
-    }
-    for(int i = 1 ; i <= n ; ++i)
+    cin >> n >> m;
+    cout << 6 - (n + m) << endl;
 
     return 0;
 }
